@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mpegts.js Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .control-panel {
+            margin-bottom: 20px;
+        }
+        #urlInput {
+            width: 70%;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #playButton {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #playButton:hover {
+            background-color: #45a049;
+        }
+        #playButton:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #videoContainer {
+            width: 100%;
+            margin-top: 20px;
+        }
+        #videoElement {
+            width: 100%;
+            background-color: #000;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>mpegts.js Demo Player</h1>
+        <div class="control-panel">
+            <input type="text" id="urlInput" placeholder="Enter stream URL here..." />
+            <button id="playButton">Play</button>
+        </div>
+        <div id="videoContainer">
+            <video id="videoElement" controls></video>
+        </div>
+        <div id="errorMessage" class="error-message"></div>
+    </div>
+
+    <!-- Load mpegts.js -->
+    <script src="/flvjs/flv.js"></script>
+
+    <script>
+        let player = null;
+
+        function initPlayer(url) {
+            if (player) {
+                player.destroy();
+                player = null;
+            }
+
+            const videoElement = document.getElementById('videoElement');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'none';
+
+            player = flvjs.createPlayer({
+                type: 'flv',
+                url: url,
+                hasAudio:true
+            }, {
+                isLive: true,
+                // 开启自动追帧
+                liveSync: true,
+                liveSyncPlaybackRate: 2.0
+            });
+
+            player.attachMediaElement(videoElement);
+            player.load();
+            player.play();
+
+        }
+
+        document.getElementById('playButton').addEventListener('click', () => {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                alert('Please enter a valid URL');
+                return;
+            }
+            
+            try {
+                initPlayer(url);
+            } catch (error) {
+                console.error('Error initializing player:', error);
+                document.getElementById('errorMessage').textContent = `Error: ${error.message}`;
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (player) {
+                player.destroy();
+                player = null;
+            }
+        });
+    </script>
+</body>
+</html>

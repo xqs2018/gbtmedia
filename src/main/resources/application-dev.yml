@@ -1,0 +1,135 @@
+server:
+  port: 18080
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+
+spring:
+  application:
+    name: gbtmedia
+  threads:
+    virtual:
+      enabled: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://192.168.2.87:3306/gbtmedia
+    username: root
+    password: VprFon%SOtYh&QsG
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+server-config:
+  # 服务器内网ip
+  ip: 192.168.2.87
+  # 设备接入到服务器通信的ip
+  accessIp: 192.168.2.87
+  # 生成播放、下载等访问的ip
+  publicIp: 192.168.2.87
+  ftp:
+    # ftp监听端口
+    port: 10021
+    # 被动模式开放端口
+    passivePorts: 10100-10200
+    # 用户名
+    username: admin
+    # 密码
+    password: 123456
+    # 文件存储路径
+    path: /var/gbtmedia/ftp
+  gbt28181:
+    # 国标信令id
+    sipId: 11010500202001000001
+    # 国标信令域
+    sipDomain: 1101050020
+    # 国标信令密码
+    sipPassword: 123456
+    # 国标信令端口
+    sipPort: 15060
+    # 国标收流端口模式 单端口 single / 多端口 multiple(兼容性高) / zlmediakit
+    mediaModel: multiple
+    # 国标流媒体单端口收流
+    mediaSinglePort: 15100
+    # 国标流媒体多端口收流范围
+    mediaMultiplePort: 15200-15300
+    # 国标流媒体播放端口
+    flvPort: 15700
+    # 浏览器发送语音到到服务器的websocket端口
+    wsPort: 15800
+    # 国标录像文件保存路径
+    recordPath: /var/gbtmedia/gbt28181/record
+    # 等待信令超时时间毫秒
+    sipTimeOut: 10000
+    # 等待上流超时时间毫秒
+    mediaTimeOut: 10000
+    # 流无人观看自动关闭毫秒
+    mediaAutoClose: 10000000
+  jtt808:
+    # 终端指令下发端口
+    cmdPort: 12808
+    # 1078收流端口模式 单端口 single / 多端口 multiple(兼容性高)
+    mediaModel: multiple
+    # 单端口收流(实时) 1078协议中没有字段区分是实时还是回放
+    mediaSinglePlayPort: 12100
+    # 单端口收流(回放) 1078协议中没有字段区分是实时还是回放
+    mediaSinglePlaybackPort: 12101
+    # 流媒体多端口收流范围
+    mediaMultiplePort: 12200-12300
+    # 流媒体播放端口
+    flvPort: 12700
+    # 浏览器发送语音到到服务器的websocket端口
+    wsPort: 12800
+    # 报警附件上传端口（苏标）
+    alarmFilePort: 12900
+    # 录像文件保存路径
+    recordPath: /var/gbtmedia/jtt808/record
+    # 报警附件保存路径
+    alarmFilePath: /var/gbtmedia/jtt808/alarmfile
+    # 等待指令超时时间
+    cmdTimeOut: 10000
+    # 等待上流超时时间毫秒
+    mediaTimeOut: 10000
+    # 流无人观看自动关闭毫秒
+    mediaAutoClose: 10000000
+
+# 可选配置，如需接入zlmediakit
+zlmediakit-config:
+    # 接口通信服务器内网的ip
+    ip: 192.168.2.87
+    # 设备接入到服务器通信的ip
+    accessIp: 192.168.2.87
+    # 生成播放、下载等访问的ip
+    publicIp: 192.168.2.87
+    # 流媒体id
+    mediaServerId: media01
+    # 流媒体密钥
+    secret: 123456
+    # 收流端口模式 单端口 single / 多端口 multiple(兼容性高)
+    mediaModel: multiple
+    # api接口端口
+    httpPort: 13800
+    # rtp收流端口
+    rtpProxyPort: 13100
+    # rtp收流端口范围
+    rtpProxyPortRange: 13200-13300
+
+# 开启接口文档swagger
+springdoc:
+  api-docs:
+    enabled: true
+
+logging:
+  file:
+    path: /var/gbtmedia/log
+  level:
+    cn.gbtmedia: debug

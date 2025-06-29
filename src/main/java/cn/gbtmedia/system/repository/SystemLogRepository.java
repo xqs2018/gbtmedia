@@ -1,0 +1,14 @@
+package cn.gbtmedia.system.repository;
+
+import cn.gbtmedia.system.entity.SysLog;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+/**
+ * @author xqs
+ */
+@Repository
+public interface SystemLogRepository extends JpaRepository<SysLog,Long>, JpaSpecificationExecutor<SysLog> {
+
+}

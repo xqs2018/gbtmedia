@@ -1,0 +1,1 @@
+import{r as e}from"./request-xFzgdMuq.js";function r(s){return e.post("/backend/system/monitor",s)}function o(s){return e.post("/backend/system/user/page",s)}function a(s){return e.post("/backend/system/user/updatePassword",s)}function n(s){return e.post("/backend/system/log/page",s)}export{a,n as l,r as m,o as u};

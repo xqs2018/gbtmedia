@@ -1,0 +1,53 @@
+version: '3'
+services:
+  gbtmedia:
+    image: xqs2018/ubuntu-jdk:21
+    container_name: gbtmedia
+    restart: always
+    network_mode: bridge
+    command: >
+      java -jar 
+      -Xms8g -Xmx8g
+      -XX:NewRatio=1 -XX:MaxGCPauseMillis=200 
+      -XX:InitiatingHeapOccupancyPercent=45
+      -Xlog:gc=debug,class=info,safepoint=info:file=/var/gbtmedia/log/gc.log:time,uptime,level,tags:filecount=1,filesize=50M 
+      -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/gbtmedia/log/dump-%t.hprof 
+      -XX:StartFlightRecording=filename=/var/gbtmedia/log/recording.jfr,duration=1800s,maxsize=100M,disk=true
+      /var/gbtmedia/jar/gbtmedia-0.0.1-SNAPSHOT.jar 
+      --spring.config.location=/var/gbtmedia/config/application.yml
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 38080:38080
+      - 30022:30022
+      - "30100-30200:30100-30200/tcp"
+      - 35060:35060/tcp
+      - 35060:35060/udp
+      - 35100:35100/tcp
+      - 35100:35100/udp
+      - "35200-35300:35200-35300/tcp"
+      - "35200-35300:35200-35300/udp"
+      - 35700:35700
+      - 35800:35800
+      - 32808:32808
+      - 32100:32100/tcp
+      - 32100:32100/udp
+      - 32101:32101/tcp
+      - 32101:32101/udp
+      - "32200-32300:32200-32300/tcp"
+      - "32200-32300:32200-32300/udp"
+      - 32700:32700
+      - 32800:32800
+      - 32900:32900
+    volumes:
+      - ./mount/config:/var/gbtmedia/config
+      - ./mount/ftp:/var/gbtmedia/ftp
+      - ./mount/gbt28181:/var/gbtmedia/gbt28181
+      - ./mount/jtt808:/var/gbtmedia/jtt808
+      - ./mount/h2:/var/gbtmedia/h2
+      - ./mount/jar:/var/gbtmedia/jar
+      - ./mount/log:/var/gbtmedia/log
+      - ./mount/font:/var/gbtmedia/font
+      - ./mount/ffmpeg/linux64:/var/gbtmedia/ffmpeg
+
+

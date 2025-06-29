@@ -1,0 +1,7 @@
+FROM ubuntu:22.04
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get update && apt-get install -y openjdk-21-jdk
+COPY ./arthas4.0.4 /var/jar/arthas4.0.4/
+
+# docker buildx build --platform linux/amd64,linux/arm64 -t xqs2018/ubuntu-jdk:21 --push .
